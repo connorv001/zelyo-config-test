@@ -11,7 +11,7 @@ spec:
     path: argocd
   destination:
     server: https://kubernetes.default.svc
-    namespace: zelyo-test
+    namespace: test-application
   syncPolicy:
     automated:
       prune: true
