@@ -1,15 +1,27 @@
+![Zelyo Security Test Banner](https://raw.githubusercontent.com/connorv001/zelyo-config-test/main/assets/banner.png)
+
 # Zelyo Config Test
 
 This repository serves as a **GitOps configuration source of truth** for testing security scanning and patching workflows within the Zelyo ecosystem.
 
-## Purpose
+> [!IMPORTANT]
+> **Primary Purpose**: This repository is specifically designed for **TESTING THE ZELYO AGENT** that we are deploying. It facilitates the validation of agent capabilities in identifying and responding to common vulnerability packages.
 
-The primary goal of this repository is to provide a "live" test environment containing a simple application with intentional, known security vulnerabilities. These vulnerabilities are specifically designed to be **fixed only through image and package version updates**, rather than code changes.
+## Overview
+
+The primary goal of this repository is to provide a "live" test environment containing a simple application with intentional, known security vulnerabilities. It serves as a benchmark for **common vulnerability packages** and base images.
+
+> [!TIP]
+> **Docker Hub Image**: The latest vulnerable image is available at:
+> `shubhamverlekar/zelyo-config-test:latest`
+
+## Why This Exists
 
 This setup allows for the verification of:
-1. **Security Scanning**: Testing tools like Kubescape, Trivy, or Grype against a running container and its manifests.
-2. **GitOps Synchronization**: Validating that ArgoCD correctly deploys and maintains the state defined in this repository.
-3. **Patching Workflows**: Demonstrating the transition from a vulnerable state to a patched state by simply updating the `Dockerfile` or `requirements.txt`.
+1. **Zelyo Agent Validation**: Specifically testing the Zelyo Agent's ability to detect and report vulnerabilities in real-time.
+2. **Security Scanning**: Testing tools like Kubescape, Trivy, or Grype against a running container and its manifests.
+3. **GitOps Synchronization**: Validating that ArgoCD correctly deploys and maintains the state defined in this repository.
+4. **Patching Workflows**: Demonstrating the transition from a vulnerable state to a patched state by simply updating the `Dockerfile` or `requirements.txt`.
 
 ## Project Components
 
@@ -39,4 +51,4 @@ The current image contains vulnerabilities in the following components:
     - `langchain-community==0.0.38` (High CVEs)
     - `langchain-text-splitters==0.0.2` (High CVEs)
 
-These vulnerabilities can be reproduced and scanned using any standard container security scanner.
+These vulnerabilities can be reproduced and scanned using any standard container security scanner as part of the Zelyo Agent testing suite.
