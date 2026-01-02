@@ -1,0 +1,5 @@
+flask==2.3.2
+langchain-core==0.1.53
+langchain-community==0.0.38
+langchain-text-splitters==0.0.2
+# These versions are known to have vulnerabilities according to security-overview.md

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zelyo-config-test
+  namespace: zelyo-test
+  labels:
+    app: zelyo-config-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zelyo-config-test
+  template:
+    metadata:
+      labels:
+        app: zelyo-config-test
+    spec:
+      containers:
+      - name: app
+        image: shubhamverlekar/zelyo-config-test:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zelyo-config-test
+  namespace: zelyo-test
+spec:
+  selector:
+    app: zelyo-config-test
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
