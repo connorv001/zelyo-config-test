@@ -19,4 +19,4 @@
 - [x] Task: Implement `GET /findings` endpoint to return parsed results (mocked persistence or in-memory list for now). [bfb75cb]
 - [x] Task: Integrate API routes into `main.py`. [a625b1c]
 - [x] Task: Write integration tests for the full flow (API -> Scanner -> Parser). [e65e667]
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: API Implementation' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 3: API Implementation' (Protocol in workflow.md)
