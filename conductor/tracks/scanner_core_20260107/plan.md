@@ -8,7 +8,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Project Skeleton & Configuration' (Protocol in workflow.md) [checkpoint: d8dd274]
 
 ## Phase 2: Domain Models & Kubescape Integration
-- [~] Task: Define Pydantic models in `src/models.py` for `Finding` and `ScanResult` based on the spec.
+- [x] Task: Define Pydantic models in `src/models.py` for `Finding` and `ScanResult` based on the spec. [ad40344]
 - [ ] Task: Create `src/scanner.py` and implement a function to check if Kubescape is installed/executable.
 - [ ] Task: Implement `run_scan()` method in `src/scanner.py` using `subprocess` to execute `kubescape scan --format json ...`.
 - [ ] Task: Create `src/parser.py` to parse raw Kubescape JSON output into list of `Finding` objects.
