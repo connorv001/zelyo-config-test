@@ -15,7 +15,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Domain Models & Kubescape Integration' (Protocol in workflow.md) [checkpoint: 3e66fee]
 
 ## Phase 3: API Implementation
-- [ ] Task: Implement `POST /scan` endpoint in `src/api/routes.py` to trigger the scanner logic.
+- [x] Task: Implement `POST /scan` endpoint in `src/api/routes.py` to trigger the scanner logic. [a625b1c]
 - [ ] Task: Implement `GET /findings` endpoint to return parsed results (mocked persistence or in-memory list for now).
 - [ ] Task: Integrate API routes into `main.py`.
 - [ ] Task: Write integration tests for the full flow (API -> Scanner -> Parser).
