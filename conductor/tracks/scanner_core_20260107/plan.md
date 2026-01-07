@@ -12,7 +12,7 @@
 - [x] Task: Create `src/scanner.py` and implement a function to check if Kubescape is installed/executable. [6413934]
 - [x] Task: Implement `run_scan()` method in `src/scanner.py` using `subprocess` to execute `kubescape scan --format json ...`. [022ed9b]
 - [x] Task: Create `src/parser.py` to parse raw Kubescape JSON output into list of `Finding` objects. [eb06384]
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Domain Models & Kubescape Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Domain Models & Kubescape Integration' (Protocol in workflow.md) [checkpoint: 3e66fee]
 
 ## Phase 3: API Implementation
 - [ ] Task: Implement `POST /scan` endpoint in `src/api/routes.py` to trigger the scanner logic.
