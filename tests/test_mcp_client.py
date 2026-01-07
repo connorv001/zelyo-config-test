@@ -6,7 +6,7 @@ from src.mcp_client import MCPClient
 async def test_sse_connection_success():
     url = "http://localhost:8000/sse"
     
-    with patch("src.mcp_client.connect_sse") as mock_connect_sse:
+    with patch("src.mcp_client.aconnect_sse") as mock_connect_sse:
         mock_context = AsyncMock()
         mock_connect_sse.return_value = mock_context
         mock_context.__aenter__.return_value = MagicMock()
@@ -21,7 +21,7 @@ async def test_sse_connection_success():
 async def test_sse_connection_failure():
     url = "http://localhost:8000/sse"
     
-    with patch("src.mcp_client.connect_sse") as mock_connect_sse:
+    with patch("src.mcp_client.aconnect_sse") as mock_connect_sse:
         mock_context = AsyncMock()
         mock_connect_sse.return_value = mock_context
         mock_context.__aenter__.side_effect = Exception("Connection failed")

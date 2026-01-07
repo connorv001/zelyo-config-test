@@ -1,5 +1,5 @@
 import httpx
-from httpx_sse import connect_sse
+from httpx_sse import aconnect_sse
 from typing import Optional, Any, Dict
 from uuid import uuid4
 
@@ -11,7 +11,7 @@ class MCPClient:
         self.post_url = url.replace("/sse", "/messages") if "/sse" in url else url + "/messages"
 
     async def connect(self) -> Any:
-        self.sse_context = connect_sse(self.client, "GET", self.url)
+        self.sse_context = aconnect_sse(self.client, "GET", self.url)
         return await self.sse_context.__aenter__()
     
     async def close(self):

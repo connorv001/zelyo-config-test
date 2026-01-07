@@ -16,7 +16,7 @@ async def test_call_tool():
     client.client.post.return_value = MagicMock(status_code=200)
     # The actual result reading would happen in the read loop, but for sending:
     
-    with patch("src.mcp_client.connect_sse") as mock_connect_sse:
+    with patch("src.mcp_client.aconnect_sse") as mock_connect_sse:
         mock_connect_sse.return_value.__aenter__.return_value = mock_stream
         await client.connect()
         

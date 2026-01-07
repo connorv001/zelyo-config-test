@@ -14,7 +14,7 @@ async def test_initialize_handshake():
     client.client.post = AsyncMock()
     client.client.post.return_value = MagicMock(status_code=200)
 
-    with patch("src.mcp_client.connect_sse") as mock_connect_sse:
+    with patch("src.mcp_client.aconnect_sse") as mock_connect_sse:
         mock_connect_sse.return_value.__aenter__.return_value = mock_stream
         
         await client.connect()
