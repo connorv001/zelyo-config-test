@@ -10,9 +10,18 @@ class MCPClient:
         self.sse_context = None
         self.post_url = url.replace("/sse", "/messages") if "/sse" in url else url + "/messages"
 
-    async def connect(self) -> Any:
-        self.sse_context = aconnect_sse(self.client, "GET", self.url)
-        return await self.sse_context.__aenter__()
+    async def connect(self, retries: int = 0, delay: float = 1.0) -> Any:
+        attempt = 0
+        while True:
+            try:
+                self.sse_context = aconnect_sse(self.client, "GET", self.url)
+                return await self.sse_context.__aenter__()
+            except (httpx.ConnectError, httpx.HTTPError) as e:
+                attempt += 1
+                if attempt > retries:
+                    raise e
+                import asyncio
+                await asyncio.sleep(delay)
     
     async def close(self):
         if self.sse_context:
