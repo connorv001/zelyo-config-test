@@ -1,17 +1,17 @@
 import httpx
 from httpx_sse import connect_sse
-from typing import Optional, Any
+from typing import Optional, Any, Dict
+from uuid import uuid4
 
 class MCPClient:
     def __init__(self, url: str):
         self.url = url
         self.client = httpx.AsyncClient()
         self.sse_context = None
+        # In a real implementation, the POST URL might be different or discovered
+        self.post_url = url.replace("/sse", "/messages") if "/sse" in url else url + "/messages"
 
     async def connect(self) -> Any:
-        # In a real application, this context manager needs to be handled carefully
-        # to keep the connection open. For this MVP step, we are just establishing it.
-        # We'll likely need to refactor this to be an async context manager itself.
         self.sse_context = connect_sse(self.client, "GET", self.url)
         return await self.sse_context.__aenter__()
     
@@ -19,3 +19,29 @@ class MCPClient:
         if self.sse_context:
             await self.sse_context.__aexit__(None, None, None)
         await self.client.aclose()
+
+    async def initialize(self):
+        # 1. Send Initialize Request
+        init_payload = {
+            "jsonrpc": "2.0",
+            "id": str(uuid4()),
+            "method": "initialize",
+            "params": {
+                "protocolVersion": "2024-11-05",
+                "capabilities": {},
+                "clientInfo": {
+                    "name": "zelyo-config-guardian",
+                    "version": "0.1.0"
+                }
+            }
+        }
+        await self.client.post(self.post_url, json=init_payload)
+        
+        # 2. Wait for response (Skipped for now as we don't have a full event loop reader yet)
+        
+        # 3. Send Initialized Notification
+        initialized_notification = {
+            "jsonrpc": "2.0",
+            "method": "notifications/initialized"
+        }
+        await self.client.post(self.post_url, json=initialized_notification)
