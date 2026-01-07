@@ -4,7 +4,7 @@
 - [x] Task: Create `src/mcp_client.py` and implement basic SSE connection logic using `httpx`. [e682c7e]
 - [x] Task: Implement MCP initialization handshake (initialize, initialized notifications). [d2f5f2c]
 - [x] Task: Implement message exchange logic for MCP tools/resources. [f5131e7]
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: SSE Client Implementation' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 1: SSE Client Implementation' (Protocol in workflow.md)
 
 ## Phase 2: Finding Mapping & Data Flow
 - [ ] Task: Implement logic to request "config hygiene" resources from the Kubescape MCP server.
