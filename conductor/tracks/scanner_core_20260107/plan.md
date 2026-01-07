@@ -5,7 +5,7 @@
 - [x] Task: Set up `src/` directory structure and create a basic `main.py` with a "Hello World" FastAPI endpoint to verify setup. [98a65f6]
 - [x] Task: Create `Dockerfile` optimized for Python 3.11+ and install Kubescape binary within the image. [6189077]
 - [x] Task: Configure `pytest` and code quality tools (ruff/mypy) in `pyproject.toml`. [937a72d]
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Project Skeleton & Configuration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Project Skeleton & Configuration' (Protocol in workflow.md) [checkpoint: d8dd274]
 
 ## Phase 2: Domain Models & Kubescape Integration
 - [ ] Task: Define Pydantic models in `src/models.py` for `Finding` and `ScanResult` based on the spec.
