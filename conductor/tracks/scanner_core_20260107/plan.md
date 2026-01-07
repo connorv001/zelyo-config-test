@@ -16,7 +16,7 @@
 
 ## Phase 3: API Implementation
 - [x] Task: Implement `POST /scan` endpoint in `src/api/routes.py` to trigger the scanner logic. [a625b1c]
-- [ ] Task: Implement `GET /findings` endpoint to return parsed results (mocked persistence or in-memory list for now).
+- [x] Task: Implement `GET /findings` endpoint to return parsed results (mocked persistence or in-memory list for now). [bfb75cb]
 - [ ] Task: Integrate API routes into `main.py`.
 - [ ] Task: Write integration tests for the full flow (API -> Scanner -> Parser).
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: API Implementation' (Protocol in workflow.md)
