@@ -53,3 +53,14 @@ class MCPClient:
         }
         await self.client.post(self.post_url, json=payload)
         # In a complete implementation, we would await the response matching this ID from the SSE stream.
+
+    async def read_resource(self, uri: str):
+        payload = {
+            "jsonrpc": "2.0",
+            "id": str(uuid4()),
+            "method": "resources/read",
+            "params": {
+                "uri": uri
+            }
+        }
+        await self.client.post(self.post_url, json=payload)
