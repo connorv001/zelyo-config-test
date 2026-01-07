@@ -10,7 +10,7 @@
 - [x] Task: Implement logic to request "config hygiene" resources from the Kubescape MCP server. [cb97e77]
 - [x] Task: Update `src/parser.py` to map MCP finding payloads to internal `Finding` models. [f4b0288]
 - [x] Task: Implement error handling for disconnected streams or malformed MCP messages. [1af546f]
-- [~] Task: Conductor - User Manual Verification 'Phase 2: Finding Mapping & Data Flow' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Finding Mapping & Data Flow' (Protocol in workflow.md) [checkpoint: a224fec]
 
 ## Phase 3: Refactoring & Integration
 - [ ] Task: Refactor `src/scanner.py` to use `mcp_client` instead of `subprocess.run()`.
