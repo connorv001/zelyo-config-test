@@ -13,3 +13,8 @@ def test_post_scan(mock_parse, mock_run):
     response = client.post("/scan")
     assert response.status_code == 200
     assert "findings" in response.json()
+
+def test_get_findings():
+    response = client.get("/findings")
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
