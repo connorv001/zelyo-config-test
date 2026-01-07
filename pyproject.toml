@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "zelyo-config-guardian"
+version = "0.1.0"
+description = "Zelyo Config Guardian"
+authors = ["Zelyo Team <team@zelyo.io>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.128.0"
+uvicorn = "^0.40.0"
+httpx = "^0.28.1"
+kubernetes = "^34.1.0"
+pydantic = "^2.12.5"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.0.2"
+pytest-cov = "^7.0.0"
+ruff = "^0.14.10"
+mypy = "^1.19.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
