@@ -1,7 +1,7 @@
 # Plan: Core Scanner Component
 
 ## Phase 1: Project Skeleton & Configuration
-- [ ] Task: Initialize Python project with `poetry`, creating `pyproject.toml` and lock file.
+- [x] Task: Initialize Python project with `poetry`, creating `pyproject.toml` and lock file. [37d1174]
 - [ ] Task: Set up `src/` directory structure and create a basic `main.py` with a "Hello World" FastAPI endpoint to verify setup.
 - [ ] Task: Create `Dockerfile` optimized for Python 3.11+ and install Kubescape binary within the image.
 - [ ] Task: Configure `pytest` and code quality tools (ruff/mypy) in `pyproject.toml`.
