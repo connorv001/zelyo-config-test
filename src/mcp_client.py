@@ -8,7 +8,6 @@ class MCPClient:
         self.url = url
         self.client = httpx.AsyncClient()
         self.sse_context = None
-        # In a real implementation, the POST URL might be different or discovered
         self.post_url = url.replace("/sse", "/messages") if "/sse" in url else url + "/messages"
 
     async def connect(self) -> Any:
@@ -21,7 +20,6 @@ class MCPClient:
         await self.client.aclose()
 
     async def initialize(self):
-        # 1. Send Initialize Request
         init_payload = {
             "jsonrpc": "2.0",
             "id": str(uuid4()),
@@ -37,11 +35,21 @@ class MCPClient:
         }
         await self.client.post(self.post_url, json=init_payload)
         
-        # 2. Wait for response (Skipped for now as we don't have a full event loop reader yet)
-        
-        # 3. Send Initialized Notification
         initialized_notification = {
             "jsonrpc": "2.0",
             "method": "notifications/initialized"
         }
         await self.client.post(self.post_url, json=initialized_notification)
+
+    async def call_tool(self, name: str, arguments: Dict[str, Any]):
+        payload = {
+            "jsonrpc": "2.0",
+            "id": str(uuid4()),
+            "method": "tools/call",
+            "params": {
+                "name": name,
+                "arguments": arguments
+            }
+        }
+        await self.client.post(self.post_url, json=payload)
+        # In a complete implementation, we would await the response matching this ID from the SSE stream.
