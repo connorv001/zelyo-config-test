@@ -1,6 +1,7 @@
 import subprocess
 import json
 from typing import Any, Dict
+from src.mcp_client import MCPClient
 
 def is_kubescape_installed() -> bool:
     try:
@@ -9,10 +10,13 @@ def is_kubescape_installed() -> bool:
     except (subprocess.CalledProcessError, FileNotFoundError):
         return False
 
-def run_scan() -> Dict[str, Any]:
-    result = subprocess.run(
-        ["kubescape", "scan", "--format", "json"],
-        capture_output=True,
-        check=True
-    )
-    return json.loads(result.stdout)
+async def run_scan() -> Dict[str, Any]:
+    # Placeholder URL - in a real app this comes from config
+    client = MCPClient("http://localhost:8000/sse")
+    await client.connect()
+    await client.initialize()
+    await client.read_resource("kubescape://findings/config-hygiene")
+    await client.close()
+    
+    # Returning empty for now as we don't have the reader loop hooked up to capture the result
+    return {}
