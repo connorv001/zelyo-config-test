@@ -2,7 +2,7 @@
 
 ## Phase 1: SSE Client Implementation
 - [x] Task: Create `src/mcp_client.py` and implement basic SSE connection logic using `httpx`. [e682c7e]
-- [ ] Task: Implement MCP initialization handshake (initialize, initialized notifications).
+- [x] Task: Implement MCP initialization handshake (initialize, initialized notifications). [d2f5f2c]
 - [ ] Task: Implement message exchange logic for MCP tools/resources.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: SSE Client Implementation' (Protocol in workflow.md)
 
