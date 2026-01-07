@@ -10,7 +10,7 @@
 ## Phase 2: Domain Models & Kubescape Integration
 - [x] Task: Define Pydantic models in `src/models.py` for `Finding` and `ScanResult` based on the spec. [ad40344]
 - [x] Task: Create `src/scanner.py` and implement a function to check if Kubescape is installed/executable. [6413934]
-- [ ] Task: Implement `run_scan()` method in `src/scanner.py` using `subprocess` to execute `kubescape scan --format json ...`.
+- [x] Task: Implement `run_scan()` method in `src/scanner.py` using `subprocess` to execute `kubescape scan --format json ...`. [022ed9b]
 - [ ] Task: Create `src/parser.py` to parse raw Kubescape JSON output into list of `Finding` objects.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Domain Models & Kubescape Integration' (Protocol in workflow.md)
 
