@@ -4,8 +4,8 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: latest  # Issue: Using 'latest' tag
+  repository: shubhamverlekar/vulnerable-app
+  tag: v1.0.0  # Issue: Using fixed version tag is better, but app itself is vulnerable
   pullPolicy: Always
 
 nameOverride: ""
