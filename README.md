@@ -1,71 +1,75 @@
-# Zelyo Config Guardian
+![Zelyo Config Test](assets/banner.png)
 
-Zelyo Config Guardian is a Kubernetes-native agent designed to detect and proactively fix configuration drifts. It operates as a zero-ops SRE capability, evolving from configuration hygiene to full runtime protection.
+# Zelyo Config Guardian - Test Environment
 
-## 🚀 Vision
-A zero-ops agent that proactively fixes Kubernetes drifts via mergeable PRs, saving teams hours on audits. Built to be Kubernetes-native, starting with Helm-first deployment and transitioning to MCP-based real-time scanning.
+> **Status:** Vulnerable by Design ⚠️
+> **Purpose:** Validation of Zelyo Agent's detection and remediation capabilities.
 
-## ✨ Core Features
-- **Config Hygiene Scanner:** Automatically detects security and configuration issues (e.g., privileged containers, missing limits, non-root enforcement).
-- **MCP Integration:** Uses the Model Context Protocol (MCP) to integrate with Kubescape MCP servers over SSE for real-time finding ingestion.
-- **Internal API:** Exposes FastAPI endpoints for triggering scans and retrieving structured findings.
-- **Dockerized:** Ready for Kubernetes deployment as a sidecar or standalone pod.
+This repository hosts a set of intentionally insecure Kubernetes manifests and Helm charts. It serves as a sandbox for testing **Zelyo Config Guardian**, an AI-powered security operator that scans clusters, identifies risks, and automatically generates GitOps-native fixes via Pull Requests.
 
-## 🛠 Tech Stack
-- **Language:** Python 3.11+
-- **Framework:** FastAPI
-- **Scanning:** Kubescape (Binary + MCP Server)
-- **Networking:** HTTPX (with SSE support)
-- **Validation:** Pydantic v2
-- **Testing:** Pytest with coverage and async support
+---
 
-## 📥 Installation
+## 🏗️ Architecture
 
-### Prerequisites
-- Python 3.11+
-- [Poetry](https://python-poetry.org/)
-- [Kubescape](https://kubescape.io/) installed locally (for binary mode)
+![GitOps Workflow](assets/architecture.png)
 
-### Setup
+The workflow demonstrates a closed-loop security automation cycle:
+1. **Deploy:** ArgoCD syncs this repo's `master` (or feature) branch to the cluster.
+2. **Scan:** Zelyo Agent scans the cluster and identifies misconfigurations.
+3. **Remediate:** Zelyo uses LLMs to generate a fix and opens a **Pull Request**.
+4. **Learn:** Anonymized data from the process builds Zelyo's shared intelligence.
+
+---
+
+## 🎯 Intentionally Vulnerable Resources
+
+We have planted specific security and configuration flaws to verify Zelyo's catch rate.
+
+### 1. The "Vulnerable App" (`charts/vulnerable-app`)
+A web application deployment with critical security gaps.
+
+| Risk Level | Issue | Description |
+|------------|-------|-------------|
+| 🔴 **Critical** | **Privileged Container** | Container runs with `--privileged` flag. |
+| 🔴 **Critical** | **Run as Root** | No security context to force non-root user. |
+| 🟠 **High** | **No Resource Limits** | CPU/Memory unbounded, risking node starvation. |
+| 🟠 **High** | **Auto-mount SA Token** | Service Account token mounted unnecessarily. |
+| 🟡 **Medium** | **No Network Policy** | Unrestricted internal traffic flow. |
+
+### 2. "Insecure RBAC" (`apps/insecure-rbac`)
+Role-based access controls that grant excessive permissions.
+
+| Risk Level | Issue | Description |
+|------------|-------|-------------|
+| 🔴 **Critical** | **Wildcard ClusterRole** | `*` verbs on `*` resources (Cluster Admin equivalent). |
+| 🔴 **Critical** | **Secrets Access** | Permission to `list/get` Secrets globally. |
+
+---
+
+## 🚀 Getting Started
+
+### 1. Deploy with ArgoCD
+Use the provided Application manifest to sync the vulnerable resources.
+
 ```bash
-poetry install
+kubectl apply -f argocd/zelyo-test-app.yaml
 ```
 
-## 🏃 Usage
+### 2. Run Zelyo Scan
+Trigger a scan from your Zelyo Agent instance.
 
-### Running the API
 ```bash
-poetry run uvicorn src.main:app --host 0.0.0.0 --port 8086
+curl -X POST http://localhost:8088/scan
 ```
 
-### API Endpoints
-- **GET `/`**: Redirects to Redoc documentation.
-- **POST `/scan`**: Triggers a new configuration scan.
-- **GET `/findings`**: Returns the latest list of findings.
-- **GET `/redoc`**: Interactive API documentation.
+### 3. Verify Remediation
+Check this repository's Pull Requests. You should see incoming PRs from Zelyo with title format:
+> **fix(C-0016): Remediate privileged container in vulnerable-app**
 
-## 🧪 Testing & Quality
-We maintain 100% code coverage.
+---
 
-### Run Tests
-```bash
-poetry run pytest
-```
+## 🛡️ Disclaimer
+**DO NOT** deploy these manifests to a production cluster. They are designed to be exploitable for educational and testing purposes only.
 
-### Run Coverage Report
-```bash
-poetry run pytest --cov=src --cov-report=term-missing
-```
-
-## 🏗 Project Structure
-- `src/`: Application source code.
-  - `api/`: FastAPI route definitions.
-  - `models.py`: Domain Pydantic models.
-  - `scanner.py`: Logic for executing Kubescape scans.
-  - `parser.py`: Logic for parsing raw scanner output.
-  - `mcp_client.py`: SSE client for MCP integration.
-- `tests/`: Comprehensive test suite (Unit + Integration).
-- `conductor/`: Project management and track tracking (using Conductor methodology).
-
-## 📄 License
-Internal use only.
+---
+*Maintained by the Zelyo AI Team for robustness testing.*

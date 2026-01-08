@@ -14,8 +14,8 @@ spec:
   project: default
   
   source:
-    repoURL: https://github.com/zelyo-ai/zelyo-config-test.git
-    targetRevision: feature/helm-test-resources
+    repoURL: https://github.com/connorv001/zelyo-config-test.git
+    targetRevision: main
     path: charts/vulnerable-app
     
     # Helm configuration
@@ -50,8 +50,8 @@ spec:
   project: default
   
   source:
-    repoURL: https://github.com/zelyo-ai/zelyo-config-test.git
-    targetRevision: feature/helm-test-resources
+    repoURL: https://github.com/connorv001/zelyo-config-test.git
+    targetRevision: main
     path: apps
     
   destination:
