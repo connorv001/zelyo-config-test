@@ -1,0 +1,61 @@
+{{- if .Values.rbac.create }}
+# Issue: Overly permissive ClusterRole
+{{- if .Values.rbac.clusterAdmin }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "vulnerable-app.fullname" . }}-admin
+  labels:
+    {{- include "vulnerable-app.labels" . | nindent 4 }}
+rules:
+# ❌ ISSUE: Wildcard on all resources - way too permissive
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "vulnerable-app.fullname" . }}-admin
+  labels:
+    {{- include "vulnerable-app.labels" . | nindent 4 }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "vulnerable-app.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ include "vulnerable-app.fullname" . }}-admin
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+---
+# Issue: Role with secrets access
+{{- if .Values.rbac.secretsAccess }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "vulnerable-app.fullname" . }}-secrets
+  labels:
+    {{- include "vulnerable-app.labels" . | nindent 4 }}
+rules:
+# ❌ ISSUE: Can read all secrets in namespace
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "vulnerable-app.fullname" . }}-secrets
+  labels:
+    {{- include "vulnerable-app.labels" . | nindent 4 }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "vulnerable-app.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ include "vulnerable-app.fullname" . }}-secrets
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- end }}

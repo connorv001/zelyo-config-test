@@ -13,7 +13,7 @@ def test_get_findings():
 @pytest.mark.asyncio
 async def test_post_scan_async():
     with patch("src.api.routes.run_scan", new_callable=AsyncMock) as mock_run:
-        with patch("src.api.routes.parse_mcp_resource_response") as mock_parse:
+        with patch("src.api.routes.parse_kubescape_results") as mock_parse:
             # Mocking run_scan to return None or empty dict as it just triggers
             mock_run.return_value = {} 
             # We are switching to parse_mcp_resource_response? 

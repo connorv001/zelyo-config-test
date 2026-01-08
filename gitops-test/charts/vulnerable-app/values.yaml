@@ -1,0 +1,57 @@
+# Default values for vulnerable-app
+# These contain INTENTIONAL misconfigurations for Zelyo testing
+
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: latest  # Issue: Using 'latest' tag
+  pullPolicy: Always
+
+nameOverride: ""
+fullnameOverride: ""
+
+# Issue: Service account with auto-mount enabled
+serviceAccount:
+  create: true
+  automountServiceAccountToken: true  # ❌ Should be false
+  name: ""
+
+# Issue: No pod security context
+podSecurityContext: {}
+  # runAsNonRoot: true  # Missing!
+  # runAsUser: 1000     # Missing!
+
+# Issue: No container security context
+securityContext: {}
+  # allowPrivilegeEscalation: false  # Missing!
+  # readOnlyRootFilesystem: true     # Missing!
+  # capabilities:
+  #   drop: ["ALL"]
+
+service:
+  type: ClusterIP
+  port: 80
+
+# Issue: No resource limits
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# Issue: No network policy
+networkPolicy:
+  enabled: false  # ❌ Should be true
+
+# Issue: No probes defined
+livenessProbe: {}
+readinessProbe: {}
+
+# RBAC settings (overly permissive for testing)
+rbac:
+  create: true
+  clusterAdmin: true  # ❌ Way too permissive
+  secretsAccess: true  # ❌ Can read secrets

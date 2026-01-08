@@ -1,0 +1,70 @@
+# ArgoCD Application for Zelyo Test (Helm-based)
+#
+# Uses Helm chart with intentional misconfigurations for Zelyo testing
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: zelyo-test-helm
+  namespace: argocd
+  labels:
+    purpose: zelyo-testing
+    chart-type: helm
+spec:
+  project: default
+  
+  source:
+    # Update this to your actual repo URL
+    repoURL: https://github.com/YOUR_ORG/zelyo-ops2.git
+    targetRevision: HEAD
+    path: gitops-test/charts/vulnerable-app
+    
+    # Helm configuration
+    helm:
+      releaseName: vulnerable-app
+      valueFiles:
+      - values.yaml
+      # Optional: Override values inline
+      # values: |
+      #   replicaCount: 2
+    
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: zelyo-test
+    
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false  # Disabled so Zelyo PRs are visible
+    syncOptions:
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+
+---
+# Also create the raw manifests application for comparison
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: zelyo-test-raw
+  namespace: argocd
+  labels:
+    purpose: zelyo-testing
+    chart-type: raw
+spec:
+  project: default
+  
+  source:
+    repoURL: https://github.com/YOUR_ORG/zelyo-ops2.git
+    targetRevision: HEAD
+    path: gitops-test/apps
+    
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: zelyo-test
+    
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+    - CreateNamespace=true

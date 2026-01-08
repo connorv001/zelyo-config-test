@@ -1,0 +1,69 @@
+# Insecure RBAC - Intentionally Overpermissive for Zelyo Testing
+#
+# Issues present:
+# - Wildcard resources
+# - Wildcard verbs
+# - Secrets access
+# - Cluster-wide scope
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: insecure-sa
+  namespace: zelyo-test
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: insecure-admin-role
+  labels:
+    purpose: zelyo-testing
+rules:
+# Issue: Wildcard on all resources
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insecure-admin-binding
+  labels:
+    purpose: zelyo-testing
+subjects:
+- kind: ServiceAccount
+  name: insecure-sa
+  namespace: zelyo-test
+roleRef:
+  kind: ClusterRole
+  name: insecure-admin-role
+  apiGroup: rbac.authorization.k8s.io
+
+---
+# Issue: Role with secrets list/get access
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secrets-reader
+  namespace: zelyo-test
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: secrets-reader-binding
+  namespace: zelyo-test
+subjects:
+- kind: ServiceAccount
+  name: insecure-sa
+  namespace: zelyo-test
+roleRef:
+  kind: Role
+  name: secrets-reader
+  apiGroup: rbac.authorization.k8s.io

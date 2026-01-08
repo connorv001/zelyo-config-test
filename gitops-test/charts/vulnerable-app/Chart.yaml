@@ -1,0 +1,8 @@
+apiVersion: v2
+name: vulnerable-app
+description: Intentionally vulnerable Helm chart for Zelyo testing
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+# WARNING: This chart contains intentional security/config issues for testing

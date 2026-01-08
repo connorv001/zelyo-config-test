@@ -1,0 +1,8 @@
+# Namespace for Zelyo testing
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zelyo-test
+  labels:
+    purpose: zelyo-testing
+    managed-by: argocd

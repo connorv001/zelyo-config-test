@@ -6,7 +6,7 @@ from uuid import uuid4
 class MCPClient:
     def __init__(self, url: str):
         self.url = url
-        self.client = httpx.AsyncClient()
+        self.client = httpx.AsyncClient(timeout=300.0) # 5 minutes timeout
         self.sse_context = None
         self.post_url = url.replace("/sse", "/messages") if "/sse" in url else url + "/messages"
 
@@ -63,7 +63,7 @@ class MCPClient:
         await self.client.post(self.post_url, json=payload)
         # In a complete implementation, we would await the response matching this ID from the SSE stream.
 
-    async def read_resource(self, uri: str):
+    async def read_resource(self, uri: str) -> Optional[Dict[str, Any]]:
         payload = {
             "jsonrpc": "2.0",
             "id": str(uuid4()),
@@ -72,4 +72,8 @@ class MCPClient:
                 "uri": uri
             }
         }
-        await self.client.post(self.post_url, json=payload)
+        response = await self.client.post(self.post_url, json=payload)
+        # Assuming HTTP transport where response contains the result
+        if response.status_code == 200:
+            return response.json()
+        return None

@@ -16,4 +16,4 @@
 - [x] Task: Refactor `src/scanner.py` to use `mcp_client` instead of `subprocess.run()`. [9d7fbfb]
 - [x] Task: Update `POST /scan` endpoint to utilize the asynchronous MCP stream. [11ee691]
 - [x] Task: Verify end-to-face integration with existing `GET /findings` endpoint. [11ee691]
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Refactoring & Integration' (Protocol in workflow.md)
+- [~] Task: Conductor - User Manual Verification 'Phase 3: Refactoring & Integration' (Protocol in workflow.md)
