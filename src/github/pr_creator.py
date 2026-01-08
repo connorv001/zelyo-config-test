@@ -11,16 +11,39 @@ class GitHubPRCreator:
     """Creates PRs in GitHub for remediation fixes."""
     
     def __init__(self):
-        self.token = os.getenv("GITHUB_TOKEN")
-        if not self.token:
-            raise ValueError("GITHUB_TOKEN environment variable is required")
+        # 1. Try GitHub App Authentication
+        app_id = os.getenv("GITHUB_APP_ID")
+        private_key = os.getenv("GITHUB_APP_PRIVATE_KEY")
+        installation_id = os.getenv("GITHUB_APP_INSTALLATION_ID")
         
+        if app_id and private_key and installation_id:
+            try:
+                from github import GithubIntegration
+                # Handle escaped newlines in private key (common in .env)
+                if "\\n" in private_key:
+                    private_key = private_key.replace("\\n", "\n")
+                    
+                # Ensure integration_id is int
+                integration = GithubIntegration(int(app_id), private_key)
+                access_token = integration.get_access_token(int(installation_id)).token
+                self.github = Github(access_token)
+                self.auth_method = "app"
+            except Exception as e:
+                raise ValueError(f"Failed to authenticate with GitHub App: {e}")
+                
+        # 2. Fallback to Personal Access Token
+        elif os.getenv("GITHUB_TOKEN"):
+            self.token = os.getenv("GITHUB_TOKEN")
+            self.github = Github(self.token)
+            self.auth_method = "token"
+        else:
+            raise ValueError("No GitHub credentials found. Set GITHUB_APP_* vars or GITHUB_TOKEN.")
+
         self.repo_name = os.getenv("GITHUB_REPO")
         if not self.repo_name:
             raise ValueError("GITHUB_REPO environment variable is required (format: org/repo)")
         
         self.base_branch = os.getenv("GITHUB_BASE_BRANCH", "main")
-        self.github = Github(self.token)
         self.repo = self.github.get_repo(self.repo_name)
     
     def create_remediation_pr(

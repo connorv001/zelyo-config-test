@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: zelyo-sa
+  namespace: zelyo
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: zelyo-scanner-role
+rules:
+  # Kubescape needs read access to almost everything to scan configurations
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: zelyo-scanner-binding
+subjects:
+  - kind: ServiceAccount
+    name: zelyo-sa
+    namespace: zelyo
+roleRef:
+  kind: ClusterRole
+  name: zelyo-scanner-role
+  apiGroup: rbac.authorization.k8s.io

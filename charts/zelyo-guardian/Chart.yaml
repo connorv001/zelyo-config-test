@@ -1,0 +1,14 @@
+apiVersion: v2
+name: zelyo-guardian
+description: A Helm chart for Zelyo Config Guardian
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - security
+  - kubernetes
+  - kubescape
+  - llm
+maintainers:
+  - name: zelyo-team
+    email: team@zelyo.io

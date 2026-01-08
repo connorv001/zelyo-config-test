@@ -20,6 +20,7 @@ class RemediationOutput(BaseModel):
     """Full remediation output."""
     strategy: str
     yaml_patch: Optional[str] = None
+    target_file: Optional[str] = None
     manual_steps: Optional[list] = None
 
 
@@ -91,6 +92,7 @@ class RemediationEngine:
                 "remediation": {
                     "strategy": "Manual review required",
                     "yaml_patch": None,
+                    "target_file": None,
                     "manual_steps": ["Review finding manually", "Consult Kubescape documentation"]
                 },
                 "pr_metadata": {

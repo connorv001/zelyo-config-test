@@ -23,6 +23,7 @@ langchain-core = "^0.3.0"
 pygithub = "^2.5.0"
 # Utilities
 pyyaml = "^6.0"
+python-dotenv = "^1.2.1"
 
 
 [tool.poetry.group.dev.dependencies]

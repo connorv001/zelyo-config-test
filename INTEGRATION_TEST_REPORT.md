@@ -287,7 +287,47 @@ These findings represent best-practice violations that could lead to resource ex
 
 ---
 
-## 8. Recommendations
+## 8. LLM Integration Verification
+
+I verified the LLM integration using the real `.env` credentials (Gemini).
+
+### Verification Script
+Executed `scripts/verify_llm.py`:
+
+```bash
+$ poetry run python scripts/verify_llm.py
+```
+
+### Results
+| Component | Status | Output |
+|-----------|--------|--------|
+| **Provider** | ✅ Gemini | Detected API Key |
+| **Connection** | ✅ Success | "Connection Successful" |
+| **Remediation** | ✅ Success | Generated YAML Patch |
+
+### Sample Remediation Output
+The Remediation Engine successfully analyzed a mock "Non-root container" finding and produced:
+
+**Strategy**: 
+> Update the Deployment to enforce non-root execution at the pod level...
+
+**Generated Patch**:
+```yaml
+spec:
+  template:
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+      containers:
+        - name: nginx
+          securityContext:
+            allowPrivilegeEscalation: false
+```
+
+---
+
+## 9. Recommendations
 
 ### Immediate Actions (Critical)
 

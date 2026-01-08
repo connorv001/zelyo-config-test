@@ -14,20 +14,16 @@ spec:
   project: default
   
   source:
-    # Update this to your actual repo URL
-    repoURL: https://github.com/YOUR_ORG/zelyo-ops2.git
-    targetRevision: HEAD
-    path: gitops-test/charts/vulnerable-app
+    repoURL: https://github.com/zelyo-ai/zelyo-config-test.git
+    targetRevision: feature/helm-test-resources
+    path: charts/vulnerable-app
     
     # Helm configuration
     helm:
       releaseName: vulnerable-app
       valueFiles:
       - values.yaml
-      # Optional: Override values inline
-      # values: |
-      #   replicaCount: 2
-    
+
   destination:
     server: https://kubernetes.default.svc
     namespace: zelyo-test
@@ -54,9 +50,9 @@ spec:
   project: default
   
   source:
-    repoURL: https://github.com/YOUR_ORG/zelyo-ops2.git
-    targetRevision: HEAD
-    path: gitops-test/apps
+    repoURL: https://github.com/zelyo-ai/zelyo-config-test.git
+    targetRevision: feature/helm-test-resources
+    path: apps
     
   destination:
     server: https://kubernetes.default.svc

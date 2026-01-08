@@ -23,6 +23,7 @@ Always respond in valid JSON with this structure:
   "remediation": {
     "strategy": "Brief description of the fix approach",
     "yaml_patch": "The YAML patch to apply (if auto-fixable)",
+    "target_file": "The relative path of the file in the repo to patch (e.g., k8s/deployment.yaml)",
     "manual_steps": ["Step 1", "Step 2"] (if not auto-fixable)
   },
   "pr_metadata": {
@@ -32,6 +33,7 @@ Always respond in valid JSON with this structure:
 }
 
 ## Guidelines:
+- Suggest a `target_file` based on the resource name and standard repo structure (e.g., k8s/, charts/).
 - NEVER auto-fix findings that could break production workloads
 - Mark as "requires_escalation" if:
   - The fix might cause downtime

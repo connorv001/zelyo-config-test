@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zelyo-guardian
+  namespace: zelyo
+  labels:
+    app: zelyo-guardian
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zelyo-guardian
+  template:
+    metadata:
+      labels:
+        app: zelyo-guardian
+    spec:
+      serviceAccountName: zelyo-sa
+      containers:
+        # 1. Main API Container
+        - name: zelyo-api
+          image: zelyo:latest
+          imagePullPolicy: IfNotPresent
+          command: ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8086"]
+          ports:
+            - containerPort: 8086
+          envFrom:
+            - secretRef:
+                name: zelyo-secrets
+          env:
+            # Point to local sidecar
+            - name: MCP_SERVER_URL
+              value: "http://localhost:8090/sse"
+            - name: ZELYO_DATA_PATH
+              value: "/data"
+          volumeMounts:
+            - name: data-volume
+              mountPath: "/data"
+              
+        # 2. Sidecar: Kubescape MCP Adapter
+        - name: zelyo-adapter
+          image: zelyo:latest
+          imagePullPolicy: IfNotPresent
+          command: ["python", "src/kubescape_mcp_adapter.py"]
+          env:
+            - name: PORT
+              value: "8090"
+          # Kubescape needs a cache dir
+          volumeMounts:
+            - name: kubescape-cache
+              mountPath: "/.kubescape"
+
+      volumes:
+        - name: data-volume
+          emptyDir: {}
+        - name: kubescape-cache
+          emptyDir: {}
