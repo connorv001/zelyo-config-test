@@ -1,59 +1,7 @@
-# Vulnerable App - Intentionally Misconfigured for Zelyo Testing
-# 
-# Issues present:
-# - Privileged container
-# - Running as root
-# - No resource limits
-# - Allow privilege escalation
-# - No security context
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: vulnerable-app
-  namespace: zelyo-test
-  labels:
-    app: vulnerable-app
-    purpose: zelyo-testing
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: vulnerable-app
   template:
-    metadata:
-      labels:
-        app: vulnerable-app
     spec:
-      # Issue: No service account specified (uses default with auto-mount)
-      automountServiceAccountToken: true
       containers:
-      - name: app
-        image: nginx:latest
-        ports:
-        - containerPort: 80
-        
-        # Issue: No security context - runs as root
-        # securityContext: {}  # Missing!
-        
-        # Issue: No resource limits
-        # resources: {}  # Missing!
-        
-        # Issue: Writable root filesystem
-        # Issue: No readOnly root filesystem
-        
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: vulnerable-app
-  namespace: zelyo-test
-spec:
-  selector:
-    app: vulnerable-app
-  ports:
-  - port: 80
-    targetPort: 80
-
----
-# Issue: No NetworkPolicy - open to all traffic
+        - name: vulnerable-deployment
+          securityContext:
+            runAsNonRoot: true
